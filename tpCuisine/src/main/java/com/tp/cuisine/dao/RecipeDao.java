@@ -19,8 +19,7 @@ public class RecipeDao {
         String FIND_RECIPES_BY_TAG = "SELECT r.id, r.name, r.image_url, r.content, r.duration, r.level, t.id, t.name "
                 + "FROM recipe r INNER JOIN tag t ON r.id_tag = t.id WHERE t.name = ?";
         Connection conn = DataBase.getConnection();
-        try (PreparedStatement stmt = conn.prepareStatement(FIND_RECIPES_BY_TAG))
-        {
+        try (PreparedStatement stmt = conn.prepareStatement(FIND_RECIPES_BY_TAG)) {
             stmt.setString(1, tagName);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -30,7 +29,7 @@ public class RecipeDao {
                     recipes.add(recipe);
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return recipes;
@@ -105,8 +104,7 @@ public class RecipeDao {
                 ")\n" +
                 "ORDER BY RAND() LIMIT 1;\n";
         Connection conn = DataBase.getConnection();
-        try (PreparedStatement stmt = conn.prepareStatement(GET_RANDOM_NOT_RECENT_RECIPE))
-        {
+        try (PreparedStatement stmt = conn.prepareStatement(GET_RANDOM_NOT_RECENT_RECIPE)) {
             stmt.setLong(1, user.getId());
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -130,8 +128,7 @@ public class RecipeDao {
     public Tag getTagById(Long id) throws SQLException {
         Tag tag = null;
         Connection conn = DataBase.getConnection();
-        try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tag WHERE id = ?"))
-        {
+        try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tag WHERE id = ?")) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -141,7 +138,6 @@ public class RecipeDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e;
         }
         return tag;
     }
@@ -149,7 +145,7 @@ public class RecipeDao {
     public List<Tag> getAllTags() throws SQLException {
         List<Tag> tags = new ArrayList<>();
         Connection conn = DataBase.getConnection();
-        try ( PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tag ORDER BY name ASC")) {
+        try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tag ORDER BY name ASC")) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Tag tag = new Tag((long) rs.getInt("id"), rs.getString("name"));
@@ -159,4 +155,51 @@ public class RecipeDao {
         return tags;
     }
 
+//    public Recipe findById(Long id) {
+//        Connection connection = DataBase.getConnection();
+//        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM recipe WHERE id = ?")) {
+//            statement.setLong(1, id);
+//            ResultSet resultSet = statement.executeQuery();
+//            if (resultSet.next()) {
+//                Recipe recipe = new Recipe();
+//                recipe.setId(resultSet.getLong("id"));
+//                recipe.setName(resultSet.getString("name"));
+//                recipe.setContent(resultSet.getString("content"));
+//                recipe.setImage_url(resultSet.getString("image_url"));
+//                recipe.setDuration(resultSet.getInt("duration"));
+//                recipe.setLevel(resultSet.getString("level"));
+//                return recipe;
+//            }
+//            return null;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+public Recipe findById(Long id) {
+    Connection connection = DataBase.getConnection();
+    try (PreparedStatement statement = connection.prepareStatement(
+            "SELECT r.*, t.name AS tag_name FROM recipe r\n" +
+                    "INNER JOIN tag t ON r.id_tag = t.id\n" +
+                    "WHERE r.id = ?")) {
+        statement.setLong(1, id);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            Recipe recipe = new Recipe();
+            recipe.setId(resultSet.getLong("id"));
+            recipe.setName(resultSet.getString("name"));
+            recipe.setContent(resultSet.getString("content"));
+            recipe.setImage_url(resultSet.getString("image_url"));
+            recipe.setDuration(resultSet.getInt("duration"));
+            recipe.setLevel(resultSet.getString("level"));
+
+            Tag tag = new Tag();
+            tag.setName(resultSet.getString("tag_name"));
+            recipe.setTag(tag);
+            return recipe;
+        }
+        return null;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
 }

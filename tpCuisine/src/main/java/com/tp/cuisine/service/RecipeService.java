@@ -19,4 +19,8 @@ public class RecipeService {
         return recipeDao.getRandomRecipeNotCookedRecently(user);
     }
 
+    public Recipe getRecipeById(long recipeId) {
+        return recipeDao.findById(recipeId);
+    }
+
 }

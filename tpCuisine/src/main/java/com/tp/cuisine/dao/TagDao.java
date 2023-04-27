@@ -29,8 +29,8 @@ public class TagDao {
 
     public Tag getTagById(long id) {
         Connection conn = DataBase.getConnection();
-        try {
-            PreparedStatement stmt = conn.prepareStatement(GET_TAG_BY_ID);
+        try (PreparedStatement stmt = conn.prepareStatement(GET_TAG_BY_ID))
+        {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
