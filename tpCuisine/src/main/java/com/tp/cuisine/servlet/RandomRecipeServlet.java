@@ -6,6 +6,7 @@ import com.tp.cuisine.model.Recipe;
 import com.tp.cuisine.model.User;
 import com.tp.cuisine.service.RecipeService;
 import com.tp.cuisine.service.UserService;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,16 +37,26 @@ public class RandomRecipeServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        // Ajouter les attributs nécessaires pour la JSP
+        request.setAttribute("recipeName", recipe.getName());
+        request.setAttribute("recipeContent", recipe.getContent());
+        request.setAttribute("recipeImageUrl", recipe.getImage_url());
+        request.setAttribute("recipeDuration", recipe.getDuration());
+        request.setAttribute("recipeLevel", recipe.getLevel());
+        request.setAttribute("recipeTag", recipe.getTag());
 
-        response.setContentType("text/html");
-        response.getWriter().println("<html><body>");
-        response.getWriter().println("<h1>Random Recipe</h1>");
-        response.getWriter().println("<h2>" + recipe.getName() + "</h2>");
-        response.getWriter().println("<p>" + recipe.getContent() + "</p>");
-        response.getWriter().println("<img src='" + recipe.getImage_url() + "'/>");
-        response.getWriter().println("<p>Duration: " + recipe.getDuration() + " min</p>");
-        response.getWriter().println("<p>Level: " + recipe.getLevel() + "</p>");
-        response.getWriter().println("</body></html>");
+        // Utiliser un RequestDispatcher pour afficher la page JSP
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/random-recipe.jsp");
+        dispatcher.forward(request, response);
+//        response.setContentType("text/html");
+//        response.getWriter().println("<html><body>");
+//        response.getWriter().println("<h1>Random Recipe</h1>");
+//        response.getWriter().println("<h2>" + recipe.getName() + "</h2>");
+//        response.getWriter().println("<p>" + recipe.getContent() + "</p>");
+//        response.getWriter().println("<img src='" + recipe.getImage_url() + "'/>");
+//        response.getWriter().println("<p>Duration: " + recipe.getDuration() + " min</p>");
+//        response.getWriter().println("<p>Level: " + recipe.getLevel() + "</p>");
+//        response.getWriter().println("</body></html>");
     }
 }
 

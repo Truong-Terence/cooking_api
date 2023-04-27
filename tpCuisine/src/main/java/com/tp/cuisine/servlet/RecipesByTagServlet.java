@@ -6,6 +6,7 @@ import com.tp.cuisine.dao.TagDao;
 import com.tp.cuisine.model.Recipe;
 import com.tp.cuisine.model.Tag;
 import com.tp.cuisine.service.RecipeService;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,24 +17,26 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/recipes")
-public class RecipeServlet extends HttpServlet {
+@WebServlet("/recipes-by-tag")
+public class RecipesByTagServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int tagId = Integer.parseInt(request.getParameter("tag"));
         TagDao tagDao = new TagDao();
-        List<Tag> tags = null;
+        Tag tag = tagDao.getTagById(tagId);
+
         RecipeDao recipeDao = new RecipeDao();
         List<Recipe> recipes = null;
         try {
-            recipes = recipeDao.getAllRecipes();
-            tags = tagDao.getAllTags();
+            recipes = recipeDao.getRecipesByTag(tagId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        request.setAttribute("tags", tags);
+        request.setAttribute("tag", tag);
         request.setAttribute("recipes", recipes);
-        request.getRequestDispatcher("/WEB-INF/recipes.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/recipes-by-tag.jsp").forward(request, response);
     }
 
 }
+

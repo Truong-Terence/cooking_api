@@ -19,6 +19,10 @@ public class Recipe {
         this.tag = tag;
     }
 
+    public Recipe() {
+
+    }
+
     public Long getId() {
         return id;
     }
