@@ -15,4 +15,8 @@
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/webapi/*</url-pattern>
     </servlet-mapping>
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>default</servlet-name>-->
+<!--        <url-pattern>/image/*</url-pattern> /!\ replace by img file or css-->
+<!--    </servlet-mapping>-->
 </web-app>
