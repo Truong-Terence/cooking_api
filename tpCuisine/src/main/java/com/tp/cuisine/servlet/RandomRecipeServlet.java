@@ -37,7 +37,7 @@ public class RandomRecipeServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        // Ajouter les attributs nécessaires pour la JSP
+
         request.setAttribute("recipeName", recipe.getName());
         request.setAttribute("recipeContent", recipe.getContent());
         request.setAttribute("recipeImageUrl", recipe.getImage_url());
@@ -45,7 +45,6 @@ public class RandomRecipeServlet extends HttpServlet {
         request.setAttribute("recipeLevel", recipe.getLevel());
         request.setAttribute("recipeTag", recipe.getTag());
 
-        // Utiliser un RequestDispatcher pour afficher la page JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/random-recipe.jsp");
         dispatcher.forward(request, response);
 //        response.setContentType("text/html");
