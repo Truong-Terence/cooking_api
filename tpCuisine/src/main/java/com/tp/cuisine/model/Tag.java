@@ -9,6 +9,10 @@ public class Tag {
         this.name = name;
     }
 
+    public Tag() {
+
+    }
+
     public Long getId() {
         return id;
     }
