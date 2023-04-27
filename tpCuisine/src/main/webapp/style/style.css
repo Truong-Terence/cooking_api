@@ -1,13 +1,10 @@
 body {
-    position: relative;
     margin: 0;
     padding: 0;
-    min-height: 100vh;
     background: #b6b6b6;
 }
 #footer {
-    margin-top: 2px;
-    position: absolute;
+    margin-top: auto;
     bottom: 0px;
     background: #F4F4F4;
     display: flex;
@@ -35,6 +32,10 @@ body {
     color: #D23333;
 }
 .section {
-    min-height: 100vh;
-    background: red;
+    min-height: 100vh!important;
+    max-height: 100vh!important;
+}
+
+.a {
+    text-decoration: none!important;
 }
