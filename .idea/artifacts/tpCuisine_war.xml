@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tpCuisine:war">
+    <output-path>$PROJECT_DIR$/tpCuisine/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>tpCuisine</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="tpCuisine.war">
+      <element id="artifact" artifact-name="tpCuisine:war exploded" />
+    </root>
+  </artifact>
+</component>
